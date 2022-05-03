@@ -12,22 +12,31 @@ def index():
         chromosome  = int(request.form.get('chromosome'))
         iterations = int(request.form.get('iterations'))
         mutation = float(request.form.get('mutation'))
-        crossing_over = request.form.get('crossing_over')
-        selection = request.form.get('selection')
-        fitnes = request.form.get('fitnes')
+        crossing_over = float(request.form.get('crossing_over'))
+        selection = float(request.form.get('selection'))
+        fitness = request.form.get('fitness')
         genetic = Genetic(population,
                             chromosome,
                             iterations,
                             mutation,
                             crossing_over,
                             selection,
-                            fitnes
+                            fitness
                         )
         # genetic.parse(data)
         # genetic.fitnes([1,0,1,0])
+        
         genetic.generate_population()
-        genetic.mutation()
+        for i in range(genetic.iterations):
+            genetic.epoch()
 
-        return render_template('index.html')
+        
+
+        return render_template('index.html',
+                                data=True,
+                                avg=genetic.avg_fitness,
+                                max=genetic.max_fitness,
+                                graph_lables=list(range(genetic.iterations))
+                                )
 
     return render_template('index.html')

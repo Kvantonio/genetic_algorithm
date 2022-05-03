@@ -15,17 +15,17 @@
   <input type="number" id="mutation" name="mutation" class="form-control" value="0.001">
   <br>
   <label for="crossing_over" class="col-form-label">Crossing over chance: </label>
-  <input type="number" id="crossing_over" name="crossing_over" class="form-control" value="0.4">
+  <input type="number" id="crossing_over" name="crossing_over" class="form-control" value="0.4" step="0.01">
   <br>
   <label for="selection" class="col-form-label">Selection chance: </label>
   <input type="number" id="selection" name="selection" class="form-control" value="0.90">
   <br>
   <label for="iterations" class="col-form-label">Number of iterations: </label>
-  <input type="number" id="iterations" name="iterations" class="form-control" value="200">
+  <input type="number" id="iterations" name="iterations" class="form-control" value="100">
   <br>
 
-  <label for="fitnes" class="col-form-label">fitnes: </label>
-  <input type="text" id="fitnes" name="fitnes" class="form-control" value="x^2+4">
+  <label for="fitness" class="col-form-label">Fitness function: </label>
+  <input type="text" id="fitness" name="fitness" class="form-control" value="x^2+4">
 
   <button type="submit">Go</button>
 </form>
@@ -34,6 +34,39 @@
     {% if image %}
         <img src='data:image/png; base64,{{image}}' >
     {% endif %}
+
+
+    <div>
+      <canvas id="myChart" width="400" height="400"></canvas>
+  </div>
+  <script>
+  const ctx = document.getElementById('myChart').getContext('2d');
+  const myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: {{graph_lables}},
+        datasets: [
+                    {
+                      
+                      label: 'AVG',
+                      data: {{avg}},
+                      
+                      borderColor: 'rgb(255, 99, 132)',
+                      backgroundColor: '#f67019',
+                    },
+                    {
+                      label: 'Max',
+                      data: {{max}},
+                      borderColor: 'rgb(54, 162, 235)',
+                      backgroundColor: '#4dc9f6',
+                      
+                    }
+              ]
+    },
+   
+});
+</script>
+
   {% endif %}
 
 {% endblock %}

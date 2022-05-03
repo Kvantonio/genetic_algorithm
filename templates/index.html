@@ -2,9 +2,8 @@
 
 
 {% block content %}
+{% if not params %}
 <form action="" method="POST">
-
-
   <label for="population" class="col-form-label">Population size: </label>
   <input type="number" id="population" name="population" class="form-control" value="100">
   <br>
@@ -12,17 +11,23 @@
   <input type="number" id="chromosome" name="chromosome" class="form-control" value="20">
   <br>
   <label for="mutation" class="col-form-label">Mutation chance: </label>
-  <input type="number" id="mutation" name="mutation" class="form-control" value="0.001">
+  <input type="number" id="mutation" name="mutation" class="form-control" value="0.001" step="0.001">
   <br>
   <label for="crossing_over" class="col-form-label">Crossing over chance: </label>
   <input type="number" id="crossing_over" name="crossing_over" class="form-control" value="0.4" step="0.01">
   <br>
   <label for="selection" class="col-form-label">Selection chance: </label>
-  <input type="number" id="selection" name="selection" class="form-control" value="0.90">
+  <input type="number" id="selection" name="selection" class="form-control" value="0.9" step="0.01">
   <br>
   <label for="iterations" class="col-form-label">Number of iterations: </label>
   <input type="number" id="iterations" name="iterations" class="form-control" value="100">
   <br>
+  <label for="trend" class="col-form-label">Trend: </label>
+  <select name="trend" id="trend">
+    <option value="min" selected>min</option>
+    <option value="max">max</option>
+  </select>
+<br>
 
   <label for="fitness" class="col-form-label">Fitness function: </label>
   <input type="text" id="fitness" name="fitness" class="form-control" value="x^2+4">
@@ -30,42 +35,77 @@
   <button type="submit">Go</button>
 </form>
 
-  {% if data %}
-    {% if image %}
-        <img src='data:image/png; base64,{{image}}' >
-    {% endif %}
 
+{% else %}
 
-    <div>
-      <canvas id="myChart" width="400" height="400"></canvas>
-  </div>
-  <script>
-  const ctx = document.getElementById('myChart').getContext('2d');
-  const myChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: {{graph_lables}},
-        datasets: [
-                    {
-                      
-                      label: 'AVG',
-                      data: {{avg}},
-                      
-                      borderColor: 'rgb(255, 99, 132)',
-                      backgroundColor: '#f67019',
-                    },
-                    {
-                      label: 'Max',
-                      data: {{max}},
-                      borderColor: 'rgb(54, 162, 235)',
-                      backgroundColor: '#4dc9f6',
-                      
-                    }
-              ]
-    },
-   
-});
-</script>
+<div>
+  <div class="form">
+<form action="" method="POST">
+  <label for="population" class="col-form-label">Population size: </label>
+  <input type="number" id="population" name="population" class="form-control" value="{{params['population']}}"">
+  <br>
+  <label for="chromosome" class="col-form-label">Chromosome size: </label>
+  <input type="number" id="chromosome" name="chromosome" class="form-control" value="{{params['chromosome']}}">
+  <br>
+  <label for="mutation" class="col-form-label">Mutation chance: </label>
+  <input type="number" id="mutation" name="mutation" class="form-control" value="{{params['mutation']}}" step="0.001">
+  <br>
+  <label for="crossing_over" class="col-form-label">Crossing over chance: </label>
+  <input type="number" id="crossing_over" name="crossing_over" class="form-control" value="{{params['crossing_over']}}" step="0.01">
+  <br>
+  <label for="selection" class="col-form-label">Selection chance: </label>
+  <input type="number" id="selection" name="selection" class="form-control" value="{{params['selection']}}" step="0.01">
+  <br>
+  <label for="iterations" class="col-form-label">Number of iterations: </label>
+  <input type="number" id="iterations" name="iterations" class="form-control" value="{{params['iterations']}}">
+  <br>
+  <label for="trend" class="col-form-label">Trend: </label>
+  <select name="trend" id="trend">
+    <option value="min" selected>min</option>
+    <option value="max">max</option>
+  </select>
+<br>
+
+  <label for="fitness" class="col-form-label">Fitness function: </label>
+  <input type="text" id="fitness" name="fitness" class="form-control" value="{{params['fitness']}}">
+
+  <button type="submit">Go</button>
+</form>
+</div>
+<div class="values">
+  <span>BAD: {{min_fit.fitness}}</span> 
+  <span>Max: {{max_fit.fitness}}</span> 
+</div>
+</div>
+
+      <canvas id="myChart" height="700px"></canvas>
+
+      <script>
+      const ctx = document.getElementById('myChart').getContext('2d');
+      const myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{graph_lables}},
+            datasets: [
+                        {
+                          label: 'AVG',
+                          data: {{avg}},
+                          borderColor: 'rgb(255, 99, 132)',
+                          backgroundColor: '#f67019',
+                        },
+                        {
+                          label: 'Max',
+                          data: {{max}},
+                          borderColor: 'rgb(54, 162, 235)',
+                          backgroundColor: '#4dc9f6',
+                          fill: false,
+                          tension: 0.1
+                        }
+                  ]
+        },
+      
+    });
+    </script>
 
   {% endif %}
 

@@ -14,18 +14,18 @@ class Individ:
 
 
 class Genetic:
-    def __init__(self, population_size, chromosome_size, iterations,
-                mutation_chance, crossing_over_chance, selection_factor, fitness):
+    def __init__(self, params):
         self.population = []
-        self.population_size = population_size
-        self.chromosome_size = chromosome_size
-        self.iterations = iterations
-        self.mutation_chance = mutation_chance
-        self.crossing_over_chance = crossing_over_chance
-        self.selection_factor = selection_factor
-        self.fitness_f = sympy.simplify(fitness, transformations='all')
+        self.population_size = params['population']
+        self.chromosome_size = params['chromosome']
+        self.iterations = params['iterations']
+        self.mutation_chance = params['mutation']
+        self.crossing_over_chance = params['crossing_over']
+        self.selection_factor = params['selection']
+        self.fitness_f = sympy.simplify(params['fitness'], transformations='all')
         self.max_fitness = []
         self.avg_fitness = []
+        self.trend = params['trend']
 
     def generate_population(self):
         self.population = [
@@ -79,7 +79,10 @@ class Genetic:
 
     def selection(self):
         # self.population.sort(key=self.fitness, reverse=True)
-        sorted_p = sorted(self.population, key=self.fitness, reverse=True)
+        reversed = False
+        if self.trend == "max":
+            reversed = True
+        sorted_p = sorted(self.population, key=self.fitness, reverse=reversed)
 
         min_fitnes = sorted_p[-1].fitness
         max_fitnes = sorted_p[0].fitness

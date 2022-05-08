@@ -153,33 +153,58 @@
     });
 
     </script>
+
+
+
+
+  {% if graph %}
+
+      <script>
+
+    const ctx1 = document.getElementById('myChart1').getContext('2d');
+    const myChart1 = new Chart(ctx1, {
+      data: {
+          datasets: [
+          {
+            type: 'scatter',
+            label: 'Algorithm result values',
+            data: {{ scatter }},
+            backgroundColor: 'rgb(75, 192, 192)'
+          },
+          {
+              type: 'line',
+              label: "Function graph: {{params['fitness']}}",
+              data: {{graph[1]}},
+              borderColor: 'rgb(54, 162, 235)',
+              backgroundColor: '#4dc9f6',
+              pointStyle: 'circle',
+              pointRadius: 0,
+              pointHoverRadius: 0
+          }
+          ],
+          labels: {{graph[0]}}
+      }
+    });
+  </script>
+  {% else %}
     <script>
 
-  const ctx1 = document.getElementById('myChart1').getContext('2d');
-  const myChart1 = new Chart(ctx1, {
-    data: {
-        datasets: [
-        {
-          type: 'scatter',
-          label: 'Algorithm result values',
-          data: {{ scatter }},
-          backgroundColor: 'rgb(75, 192, 192)'
-        },
-        {
-            type: 'line',
-            label: "Function graph: {{params['fitness']}}",
-            data: {{lables_y}},
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            borderColor: 'rgba(255, 99, 132, 1)',
-            pointStyle: 'circle',
-            pointRadius: 0,
-            pointHoverRadius: 0
+      const ctx1 = document.getElementById('myChart1').getContext('2d');
+      const myChart1 = new Chart(ctx1, {
+        data: {
+            datasets: [
+            {
+              type: 'scatter',
+              label: 'Algorithm result values',
+              data: {{ scatter }},
+              backgroundColor: 'rgb(75, 192, 192)'
+            },
+            ],
+            
         }
-        ],
-        labels: {{lables_x}}
-    }
-  });
-</script>
+      });
+    </script>
+  {% endif %}
 
   {% endif %}
 

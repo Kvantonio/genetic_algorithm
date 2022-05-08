@@ -47,7 +47,7 @@ class Genetic:
             val = 0
             for index, value in enumerate(bin_variable):
                 val += value*pow(2.0,-(index-position+1))
-            result.append(val*100-50)
+            result.append(val*10-5)
         return result
 
     def calculate_f(self, data):
@@ -123,6 +123,12 @@ class Genetic:
 
         return [{'x': x, 'y': y} for x, y in zip(x,y)]
 
+    def get_coord_two(self):
+        start = [self.decode(i.chromosome, 2) for i in self.avg_chromosome]
+        res = [{'x': x, 'y': y} for x, y in [self.decode(i.chromosome, 2) for i in self.avg_chromosome]]
+
+        return res
+
     def get_graph(self):
 
         min_x = min(self.avg_chromosome, key=lambda x: self.decode(x.chromosome, 1)[0])
@@ -136,5 +142,4 @@ class Genetic:
 
         x = [i for i in np.arange(min_x, max_x+1, abs(min_x-max_x)/self.iterations)]
         y = [self.calculate_f([i]) for i in x]
-        print(x)
         return x, y

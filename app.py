@@ -32,10 +32,15 @@ def index():
         print(end-start)
         min_fit = genetic.population[-1]
         max_fit = genetic.max_fitness[-1]
-
-        scatter = genetic.get_coord_one()
-        scatter = str(scatter).replace("\'", '')
-        lables_x, lables_y = genetic.get_graph()
+        graph = None
+        if len(genetic.fitness_f.free_symbols) == 1:
+            scatter = genetic.get_coord_one()
+            scatter = str(scatter).replace("\'", '')
+            graph = genetic.get_graph()
+        else:
+            scatter = genetic.get_coord_two()
+            scatter = str(scatter).replace("\'", '')
+            max_fit = genetic.decode(genetic.population[0].chromosome, 2)
 
 
         return render_template('index.html',
@@ -46,8 +51,7 @@ def index():
                                 min_fit=min_fit,
                                 max_fit=max_fit,
                                 scatter=scatter,
-                                lables_x=lables_x,
-                                lables_y=lables_y
+                                graph=graph
                                 )
 
     return render_template('index.html')

@@ -35,9 +35,6 @@ class Genetic:
                         for _ in range(self.population_size)
                     ]
 
-    def get_population(self):
-        return self.population
-
     def decode(self, chromosome, num_of_variables) -> list:
         split_chromosome = np.array_split(np.array(chromosome), num_of_variables)
 
@@ -124,7 +121,6 @@ class Genetic:
         return [{'x': x, 'y': y} for x, y in zip(x,y)]
 
     def get_coord_two(self):
-        start = [self.decode(i.chromosome, 2) for i in self.avg_chromosome]
         res = [{'x': x, 'y': y} for x, y in [self.decode(i.chromosome, 2) for i in self.avg_chromosome]]
 
         return res
